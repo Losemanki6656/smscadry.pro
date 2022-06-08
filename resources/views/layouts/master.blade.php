@@ -28,10 +28,22 @@
                      <label>dashboard</label>
                 </li>
                 <li class="nav-item">
-                     <a href="{{route('home')}}" class="nav-link "><span class="pcoded-micon"><i class="fa fa-users"></i></span><span class="pcoded-mtext">Cadry</span></a>
+                     <a href="{{route('home')}}" class="nav-link ">
+                        <span class="pcoded-micon">
+                            <i class="fa fa-users text-primary"></i>
+                        </span><span class="pcoded-mtext">Cadry</span></a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{route('departments')}}" class="nav-link ">
+                       <span class="pcoded-micon">
+                           <i class="fas fa-sitemap text-primary"></i>
+                       </span><span class="pcoded-mtext">Departments</span></a>
+              </li>
                <li class="nav-item">
-                     <a href="{{route('archive')}}" class="nav-link "><span class="pcoded-micon"><i class="fa fa-check"></i></span><span class="pcoded-mtext">Archive</span></a>
+                     <a href="{{route('archive')}}" class="nav-link ">
+                        <span class="pcoded-micon">
+                            <i class="fas fa-file-archive text-primary"></i>
+                        </span><span class="pcoded-mtext">Archive</span></a>
                </li>
                 
             </ul>      

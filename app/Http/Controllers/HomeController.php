@@ -45,4 +45,25 @@ class HomeController extends Controller
             'deps' => $deps
         ]);
     }
+
+    public function add_worker(Request $request)
+    {
+      // dd($request->all());
+       $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+
+       $char = ['(', ')', ' ','-','+'];
+       $replace = ['', '', '','',''];
+       $phone = str_replace($char, $replace, $request->phone);
+
+       $cadry = new Cadry();
+       $cadry->organization_id = $org_id;
+       $cadry->department_id = $request->department_id ?? 0;
+       $cadry->fullname = $request->fullname;
+       $cadry->phone = $phone;
+       $cadry->date_med2 = $request->date_med;
+       $cadry->date_vac2 = $request->date_vac;
+       $cadry->save();
+
+       return redirect()->back()->with('msg' ,1);
+    }
 }

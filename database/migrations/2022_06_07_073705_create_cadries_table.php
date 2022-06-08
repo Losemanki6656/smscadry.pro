@@ -17,7 +17,7 @@ class CreateCadriesTable extends Migration
             $table->id();
             $table->integer('organization_id');
             $table->integer('department_id')->nullable();
-            $table->integer('fullname');
+            $table->string('fullname');
             $table->string('phone');
             $table->date('date_med1')->nullable();
             $table->date('date_med2')->nullable();

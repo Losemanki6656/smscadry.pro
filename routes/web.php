@@ -22,8 +22,9 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::get('/add-worker', [App\Http\Controllers\HomeController::class, 'add_worker'])->name('add_worker');
+Route::post('/add-worker', [App\Http\Controllers\HomeController::class, 'add_worker'])->name('add_worker');
 Route::get('/archive', [App\Http\Controllers\HomeController::class, 'archive'])->name('archive');
+Route::get('/departments', [App\Http\Controllers\HomeController::class, 'departments'])->name('departments');
 
 
 
