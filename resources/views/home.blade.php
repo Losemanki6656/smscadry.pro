@@ -73,8 +73,8 @@
                                 <div class="form-group">
                                     <select name="department_id" class="form-control" style="width: 100%;">
                                         <option value="">Select Department</option>
-                                        @foreach ($deps as $item)
-                                            <option value="{{ $dep->id }}">{{ $dep->name }}</option>
+                                        @foreach ($deps as $wer)
+                                            <option value="{{ $wer->id }}">{{ $wer->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
