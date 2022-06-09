@@ -51,18 +51,56 @@ class HomeController extends Controller
       // dd($request->all());
        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
 
-       $char = ['(', ')', ' ','-','+'];
-       $replace = ['', '', '','',''];
-       $phone = str_replace($char, $replace, $request->phone);
+       //$char = ['(', ')', ' ','-','+'];
+       //$replace = ['', '', '','',''];
+       //$phone = str_replace($char, $replace, $request->phone);
 
        $cadry = new Cadry();
        $cadry->organization_id = $org_id;
        $cadry->department_id = $request->department_id ?? 0;
        $cadry->fullname = $request->fullname;
-       $cadry->phone = $phone;
+       $cadry->phone = $request->phone;
        $cadry->date_med2 = $request->date_med;
        $cadry->date_vac2 = $request->date_vac;
        $cadry->save();
+
+       return redirect()->back()->with('msg' ,1);
+    }
+
+    public function departments()
+    {
+        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+
+        $deps = Department::where('organization_id',$org_id);
+
+        return view('departments',[
+            'deps' => $deps->paginate(10)
+        ]);
+    }
+
+    public function add_department(Request $request)
+    {
+        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+
+        $dep = new Department();
+        $dep->organization_id = $org_id;
+        $dep->name = $request->name;
+        $dep->save();
+
+       return redirect()->back()->with('msg' ,1);
+    }
+
+    public function edit_department(Request $request,$id)
+    {
+        $dep = Department::find($id);
+        $dep->name = $request->name;
+        $dep->save();
+
+       return redirect()->back()->with('msg' ,1);
+    }
+    public function delete_department($id)
+    {
+        $dep = Department::find($id)->delete();
 
        return redirect()->back()->with('msg' ,1);
     }

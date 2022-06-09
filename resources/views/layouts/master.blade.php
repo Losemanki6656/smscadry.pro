@@ -20,7 +20,7 @@
 
 <body class="">
 
-<nav class="pcoded-navbar menupos-fixed menu-light ">
+<nav class="pcoded-navbar menupos-fixed">
     <div class="navbar-wrapper  ">
         <div class="navbar-content scroll-div ">
             <ul class="nav pcoded-inner-navbar ">
@@ -52,7 +52,7 @@
 </nav>
 
 
-<header class="navbar pcoded-header navbar-expand-lg navbar-light headerpos-fixed header-blue">
+<header class="navbar pcoded-header navbar-expand-lg navbar-light headerpos-fixed header-purple">
     <div class="m-header">
         <a class="mobile-menu" id="mobile-collapse"><span></span></a>
         <a href="/" class="b-brand">

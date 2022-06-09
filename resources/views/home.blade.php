@@ -15,15 +15,21 @@
             <div class="card-header">
 
                 <div class="form-inline">
-                    <div class="form-group mx-sm-3 mb-2">
+                    <div class="form-group mx-sm-3">
                         <form action="{{ route('home') }}" method="get">
                             @csrf
                             <input class="form-control form-control-sm" value="{{ request()->query('search') }}"
                                 name="search" type="search" placeholder="search ..." />
                         </form>
                     </div>
-                    <button type="button" class="btn btn-primary mb-2 btn-sm" data-toggle="modal"
+                    <button type="button" class="btn btn-primary btn-sm mr-2" data-toggle="modal"
                         data-target="#exampleModalCenter"><i class="fa fa-plus mr-2"></i>Add Worker</button>
+
+                        <button type="button" class="btn btn-danger btn-sm mr-2" data-toggle="modal"
+                            data-target="#exampleModalCenter"><i class="fa fa-filter mr-2"></i>Filter</button>
+                           
+                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
+                                data-target="#exampleModalCenter"><i class="fa fa-message mr-2"></i>Send sms</button>
                 </div>
 
                 <div class="card-header-right">
@@ -78,19 +84,19 @@
                                         style="width: 100%;" value="998">
                                 </div>
                                 <div class="form-group">
-                                  <div class="row">
-                                    <div class="col">
-                                      <label for="organization_phone"> Date Med</label>
-                                      <input type="date" class="form-control" name="date_med" required
-                                          style="width: 100%;">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="organization_phone"> Date Med</label>
+                                            <input type="date" class="form-control" name="date_med" required
+                                                style="width: 100%;">
+                                        </div>
+                                        <div class="col">
+                                            <label for="organization_phone"> Date Vacation</label>
+                                            <input type="date" class="form-control" name="date_vac" required
+                                                style="width: 100%;">
+                                        </div>
                                     </div>
-                                    <div class="col">
-                                      <label for="organization_phone"> Date Vacation</label>
-                                      <input type="date" class="form-control" name="date_vac" required
-                                          style="width: 100%;">
-                                    </div>
-                                  </div>
-                                    
+
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -106,60 +112,77 @@
                 <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover m-b-0">
+                            <table class="table table-sm">
                                 <thead>
                                     <tr>
                                         <th><span>Name</span></th>
                                         <th width="250"><span>Department</span></th>
-                                        <th width="200"><span>Phone</span></th>
-                                        <th width="120"><span>Date Vacation</span></th>
-                                        <th width="120"><span>Status</span></th>
-                                        <th class="text-center" width="250"><span>Action</span></th>
+                                        <th width="230"><span>Phone</span></th>
+                                        <th width="150"><span>Date V</span></th>
+                                        <th width="150"><span>Date M</span></th>
+                                        <th width="150"><span>Status</span></th>
+                                        <th width="150"><span>Status</span></th>
+                                        <th class="text-center" width="50"><span>Action</span></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($cadry as $item)
                                         <tr>
-                                            <td>{{ $item->fullname }}</td>
+                                            <td><a href="" class="text-dark" style="font-weight: bold" data-toggle="modal"
+                                                data-target="#editmodal{{ $item->id }}">{{ $item->fullname }}</a></td>
                                             <td>{{ $item->department }}</td>
                                             <td>{{ $item->phone }}</td>
-                                            <td>{{ $item->date_vac2->format('d-m-Y') }}</td>
+                                            <td>
+                                                <a href="" class="text-light">
+                                                    <span class="badge bg-secondary">{{ $item->date_vac2->format('d-m-Y') }}</span>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="" class="text-light">
+                                                    <span class="badge bg-primary">{{ $item->date_vac2->format('d-m-Y') }}</span>
+                                                </a>
+                                            </td>
                                             <td>
                                                 @if ($item->date_vac2 > now())
                                                     @if ($item->date_vac2->diffInDays() + 1 > 5)
-                                                        <span class="badge badge-primary">
+                                                        <span class="text-primary" style="font-weight: bold">
                                                             {{ $item->date_vac2->diffInDays() + 1 }} days left</span>
                                                     @else
-                                                        <span class="badge badge-warning">
+                                                        <span class="text-warning">
                                                             {{ $item->date_vac2->diffInDays() + 1 }} days left</span>
                                                     @endif
                                                 @else
-                                                    <span class="badge badge-danger">Expired<span class="ms-1 fas fa-ban"
+                                                    <span class="text-danger">Expired<span class="ms-1 fas fa-ban"
                                                             data-fa-transform="shrink-2"></span></span>
                                                 @endif
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-icon btn-outline-success"
-                                                    title="Success" data-toggle="modal"
-                                                    data-target="#succmodal{{ $item->id }}"><i
-                                                        class="fa fa-check"></i></button>
-                                                <button type="button" class="btn btn-icon btn-outline-secondary"
-                                                    title="Edit" data-toggle="modal"
-                                                    data-target="#editmodal{{ $item->id }}"><i
-                                                        class="fa fa-edit"></i></button>
-                                                <button type="button" class="btn btn-icon btn-outline-danger" title="Delete"
-                                                    data-toggle="modal" data-target="#deletemodal{{ $item->id }}"><i
-                                                        class="fa fa-trash-alt"></i></button>
-                                                <button type="button" class="btn  btn-icon btn-outline-primary"
-                                                    title="Send Sms" data-toggle="modal"
-                                                    data-target="#sendmodal{{ $item->id }}"><i
-                                                        class="fa fa-paper-plane"></i></button>
+                                                @if ($item->date_vac2 > now())
+                                                    @if ($item->date_vac2->diffInDays() + 1 > 5)
+                                                        <span class="text-primary" style="font-weight: bold">
+                                                            {{ $item->date_vac2->diffInDays() + 1 }} days left</span>
+                                                    @else
+                                                        <span class="text-warning">
+                                                            {{ $item->date_vac2->diffInDays() + 1 }} days left</span>
+                                                    @endif
+                                                @else
+                                                    <span class="text-danger">Expired<span class="ms-1 fas fa-ban"
+                                                            data-fa-transform="shrink-2"></span></span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="form-group d-inline">
+                                                    <div class="checkbox d-inline">
+                                                        <input type="checkbox" name="checkbox-in-1" id="chek{{$item->id}}">
+                                                        <label for="chek{{$item->id}}" class="cr"></label>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
 
                                         <div id="succmodal{{ $item->id }}" class="modal fade" tabindex="-1"
                                             role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <form action="{{ route('success_user') }}" method="get">
+                                            <form action="{{ route('success_user', ['id' => $item->id]) }}" method="get">
                                                 @csrf
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
@@ -190,7 +213,7 @@
                                                                 <label for="organization_phone"> Date</label>
                                                                 <input type="date" class="form-control" readonly="true"
                                                                     id="date_vacation" name="date_vacation"
-                                                                    value="{{ $item->date_vacation->addYear()->format('Y-m-d') }}"
+                                                                    value="{{ $item->date_vac2->addYear()->format('Y-m-d') }}"
                                                                     required style="width: 100%;">
                                                             </div>
                                                         </div>
@@ -206,7 +229,7 @@
 
                                         <div id="editmodal{{ $item->id }}" class="modal fade" tabindex="-1"
                                             role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <form action="{{ route('edit_user') }}" method="get">
+                                            <form action="{{ route('edit_user', ['id' => $item->id]) }}" method="get">
                                                 @csrf
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
@@ -219,72 +242,45 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="form-group">
-                                                                <input type="hidden" name="iduseredit"
-                                                                    value="{{ $item->id }}">
-                                                                <label for="edtname">Fullname</label>
-                                                                <input type="text" class="form-control" id="editname"
-                                                                    name="nameedit" value="{{ $item->fullname }}"
-                                                                    style="width: 100%;" required>
+                                                                <input type="text" class="form-control" name="fullname" placeholder="Fullname"
+                                                                    style="width: 100%;" value="{{$item->fullname}}" required>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="departmentedit">Department</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="departmentedit" value="{{ $item->department }}"
-                                                                    name="departmentedit" style="width: 100%;" required>
+                                                                <select name="department_id" class="form-control" style="width: 100%;">
+                                                                    <option value="">Select Department</option>
+                                                                    @foreach ($deps as $dep)
+                                                                        <option value="{{ $dep->id }}">{{ $dep->name }}</option>
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="organization_phone"> Phone Number</label>
-                                                                <input type="text" id="phone2" class="form-control"
-                                                                    name="phone2" required value="{{ $item->phone }}"
-                                                                    style="width: 100%;">
+                                                                <input type="text" id="phone" class="form-control phone" name="phone" required
+                                                                    style="width: 100%;" value="{{$item->phone}}">
                                                             </div>
-
                                                             <div class="form-group">
-                                                                <label for="organization_phone"> Date</label>
-                                                                <input type="date" class="form-control" name="date_vac"
-                                                                    value="{{ $item->date_vacation->format('Y-m-d') }}"
-                                                                    required style="width: 100%;">
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <label for="organization_phone"> Date Med</label>
+                                                                        <input type="date" class="form-control" name="date_med"
+                                                                        value="{{$item->date_med2->format('Y-m-d')}}" required
+                                                                            style="width: 100%;">
+                                                                    </div>
+                                                                    <div class="col">
+                                                                        <label for="organization_phone"> Date Vacation</label>
+                                                                        <input type="date" class="form-control" name="date_vac" 
+                                                                        value="{{$item->date_vac2->format('Y-m-d')}}" required
+                                                                            style="width: 100%;">
+                                                                    </div>
+                                                                </div>
+                            
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
+                                                            <a type="button" class="btn  btn-danger" href="{{ route('delete_user', ['id' => $item->id]) }}">Delete</a>
                                                             <button type="button" class="btn  btn-secondary"
                                                                 data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn  btn-success">Submit </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-
-                                        <div id="deletemodal{{ $item->id }}" class="modal fade" tabindex="-1"
-                                            role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <form action="{{ route('delete_user') }}" method="get">
-                                                @csrf
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Delete
-                                                                User</h5>
-                                                            <button type="button" class="close"
-                                                                data-dismiss="modal" aria-label="Close"><span
-                                                                    aria-hidden="true">&times;</span></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="form-group">
-                                                                <input type="hidden" name="iduserdelete"
-                                                                    value="{{ $item->id }}">
-                                                                <h4><code> {{ $item->fullname }} </code></h4>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <h4>
-                                                                    Do you really want to delete?
-                                                                </h4>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn  btn-secondary"
-                                                                data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn  btn-danger">Delete </button>
+                                                            <button type="submit" class="btn  btn-success"> Edit </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -293,7 +289,7 @@
 
                                         <div id="sendmodal{{ $item->id }}" class="modal fade" tabindex="-1"
                                             role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <form action="{{ route('send_message') }}" method="get">
+                                            <form action="{{ route('send_message', ['id' => $item->id]) }}" method="get">
                                                 @csrf
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
