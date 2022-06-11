@@ -24,6 +24,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/departments', [App\Http\Controllers\HomeController::class, 'departments'])->name('departments');
 Route::get('/archive-sms', [App\Http\Controllers\HomeController::class, 'archive_sms'])->name('archive_sms');
 Route::get('/actions', [App\Http\Controllers\HomeController::class, 'actions'])->name('actions');
+Route::get('/holidays', [App\Http\Controllers\HomeController::class, 'holidays'])->name('holidays');
 
 
 //Department Menu
@@ -41,5 +42,8 @@ Route::post('/send-message/{id}', [App\Http\Controllers\HomeController::class, '
 
 Route::get('/cadry/vacation/{id}', [App\Http\Controllers\HomeController::class, 'vacation'])->name('vacation');
 
-
+//holidasys
+Route::post('/add-holiday', [App\Http\Controllers\HomeController::class, 'add_holiday'])->name('add_holiday');
+Route::get('/edit-holiday/{id}', [App\Http\Controllers\HomeController::class, 'edit_holiday'])->name('edit_holiday');
+Route::get('/delete-holiday{id}', [App\Http\Controllers\HomeController::class, 'delete_holiday'])->name('delete_holiday');
 

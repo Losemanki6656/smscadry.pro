@@ -12,6 +12,7 @@ use App\Models\SessionMed;
 use App\Models\Organization;
 use App\Models\SmsToken;
 use App\Models\SmsArchive;
+use App\Models\Holiday;
 
 class HomeController extends Controller
 {
@@ -289,11 +290,66 @@ class HomeController extends Controller
         return redirect()->back();
     }
 
-    public function vacation($id)
+    public function vacation($id, Request $request)
     {
         $item = Cadry::find($id);
+        $day_vacation = 15;
+
+        $query = $request->query();
+        if($query) {
+            
+            $day_vacation = $day_vacation + $request->lavozim;
+            $day_vacation = $day_vacation + $request->staj;
+
+            return view('vacation_cadry',[
+                'item' => $item,
+                'day_vacation' => $day_vacation
+            ]);
+        }
+
         return view('vacation_cadry',[
-            'item' => $item
+            'item' => $item,
+            'day_vacation' => $day_vacation
         ]);
+    }
+
+    public function holidays()
+    {
+        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+
+        $deps = Holiday::where('organization_id',$org_id);
+
+        return view('holidays',[
+            'deps' => $deps->paginate(10)
+        ]);
+    }
+
+    public function add_holiday(Request $request)
+    {
+        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+
+        $dep = new Holiday();
+        $dep->organization_id = $org_id;
+        $dep->name = $request->name;
+        $dep->date_holiday = $request->date_holiday;
+        $dep->save();
+
+       return redirect()->back()->with('msg' ,1);
+    }
+
+    public function edit_holiday(Request $request,$id)
+    {
+        $dep = Holiday::find($id);
+        $dep->name = $request->name;
+        $dep->date_holiday = $request->date_holiday;
+        $dep->save();
+
+       return redirect()->back()->with('msg' ,1);
+    }
+    public function delete_holiday($id)
+    {
+        $dep = Holiday::find($id)->delete();
+
+       return redirect()->back()->with('msg' ,1);
     }
 }
