@@ -16,6 +16,17 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
+
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+<!-- Semantic UI theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+<!-- Bootstrap theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
 </head>
 
 <body class="">
@@ -40,11 +51,32 @@
                        </span><span class="pcoded-mtext">Departments</span></a>
               </li>
                <li class="nav-item">
-                     <a href="{{route('archive')}}" class="nav-link ">
+                     <a href="{{route('archive_sms')}}" class="nav-link ">
                         <span class="pcoded-micon">
                             <i class="fas fa-file-archive text-primary"></i>
                         </span><span class="pcoded-mtext">Archive</span></a>
                </li>
+
+               <li class="nav-item">
+                <a href="{{route('actions')}}" class="nav-link ">
+                   <span class="pcoded-micon">
+                    <i class="fas fa-calendar-check text-primary"></i>
+                   </span><span class="pcoded-mtext">Actions</span></a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{route('actions')}}" class="nav-link ">
+                       <span class="pcoded-micon">
+                        <i class="fas fa-clock text-primary"></i>
+                       </span><span class="pcoded-mtext">Submitted</span></a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{route('actions')}}" class="nav-link ">
+                           <span class="pcoded-micon">
+                            <i class="fas fa-check-circle text-primary"></i>
+                           </span><span class="pcoded-mtext">Accepted</span></a>
+                        </li>
                 
             </ul>      
         </div>
@@ -57,8 +89,8 @@
         <a class="mobile-menu" id="mobile-collapse"><span></span></a>
         <a href="/" class="b-brand">
 
-            <img src="assets/images/logo.png" alt="" class="logo">
-            <img src="assets/images/logo-icon.png" alt="" class="logo-thumb">
+            <img src="{{asset('assets/images/logo.png')}}" alt="" class="logo">
+            <img src="{{asset('assets/images/logo-icon.png')}}" alt="" class="logo-thumb">
         </a>
         <a  class="mob-toggler">
             <i class="feather icon-more-vertical"></i>
@@ -75,11 +107,11 @@
             <li>
                 <div class="dropdown drp-user">
                     <a href="#!" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="assets/images/user/avatar-1.jpg" class="img-radius wid-40" alt="User-Profile-Image">
+                        <img src="{{asset('assets/images/user/avatar-1.jpg')}}" class="img-radius wid-40" alt="User-Profile-Image">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-notification">
                         <div class="pro-head">
-                            <img src="assets/images/user/avatar-2.jpg" class="img-radius" alt="User-Profile-Image">
+                            <img src="{{asset('assets/images/user/avatar-2.jpg')}}" class="img-radius" alt="User-Profile-Image">
                             <span>{{ Auth::user()->name }}</span>
                             <a href="{{route('logout')}}" class="dud-logout" title="Logout"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -123,8 +155,10 @@
 
 <script src="{{asset('assets/js/bootstrap-select.min.js')}}"></script>
 <script src="{{asset('assets/js/bootstrap-select.js')}}"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
     @yield('scripts')
+    @stack('scripts')
 </body>
 
 <!-- Mirrored from lite.codedthemes.com/gradient-able/bootstrap/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 06 Nov 2021 12:04:49 GMT -->

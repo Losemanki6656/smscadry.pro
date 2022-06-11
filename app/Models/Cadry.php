@@ -16,4 +16,8 @@ class Cadry extends Model
     protected $dates = ['date_vac1', 'date_vac2', 'date_med1', 'date_med2', 'date_tb1', 'date_tb2'];
     protected $dateFormat = 'Y-m-d';
 
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }
