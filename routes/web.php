@@ -47,3 +47,6 @@ Route::post('/add-holiday', [App\Http\Controllers\HomeController::class, 'add_ho
 Route::get('/edit-holiday/{id}', [App\Http\Controllers\HomeController::class, 'edit_holiday'])->name('edit_holiday');
 Route::get('/delete-holiday{id}', [App\Http\Controllers\HomeController::class, 'delete_holiday'])->name('delete_holiday');
 
+
+Route::get('/exportVacationToDoc', [App\Http\Controllers\OrganizationController::class, 'exportVacationToDoc'])->name('exportVacationToDoc');
+

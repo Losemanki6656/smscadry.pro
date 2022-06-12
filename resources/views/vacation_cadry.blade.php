@@ -141,8 +141,8 @@
                     <select name="" id="sel_user" class="form-control" style="width: 100%">
                         <option value="">Username</option>
                     </select> <br> <br>
-                    <button class="btn btn-primary" style="width: 100%">
-                        <i class="fab fa-telegram-plane"></i> Yuborish</button>
+                    <a class="btn btn-primary" href="{{route('exportVacationToDoc')}}" style="width: 100%">
+                        <i class="fab fa-telegram-plane"></i> Yuborish</a>
                 </div>
             </div>
         </div>
