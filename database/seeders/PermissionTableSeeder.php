@@ -19,6 +19,7 @@ class PermissionTableSeeder extends Seeder
            'tb',
            'cadry',
            'admin',
+           'buxgalter',
            'home_page',
            'product-create',
            'product-edit',

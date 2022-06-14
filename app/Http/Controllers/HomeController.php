@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use User;
 use Auth;
 use App\Models\UserOrganization;
 use App\Models\Cadry;
@@ -13,6 +12,7 @@ use App\Models\Organization;
 use App\Models\SmsToken;
 use App\Models\SmsArchive;
 use App\Models\Holiday;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -292,6 +292,11 @@ class HomeController extends Controller
 
     public function vacation($id, Request $request)
     {
+        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+        $id_users = UserOrganization::where('organization_id',$org_id)->pluck('user_id')->toArray();
+        $users = User::whereIn('id',$id_users)->role('Buxgalter')->get();
+        //dd($users);
+
         $item = Cadry::find($id);
         $day_vacation = 15;
 
@@ -303,13 +308,15 @@ class HomeController extends Controller
 
             return view('vacation_cadry',[
                 'item' => $item,
-                'day_vacation' => $day_vacation
+                'day_vacation' => $day_vacation,
+                'users' => $users
             ]);
         }
 
         return view('vacation_cadry',[
             'item' => $item,
-            'day_vacation' => $day_vacation
+            'day_vacation' => $day_vacation,
+            'users' => $users
         ]);
     }
 

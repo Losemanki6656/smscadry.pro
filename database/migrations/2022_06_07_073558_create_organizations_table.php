@@ -18,6 +18,7 @@ class CreateOrganizationsTable extends Migration
             $table->string('name');
             $table->boolean('med')->default(false);
             $table->boolean('vacation')->default(false);
+            $table->boolean('vacation_bux')->default(false);
             $table->boolean('tb')->default(false);
             $table->integer('sms_token_id')->default(0);
             $table->integer('status')->default(0);

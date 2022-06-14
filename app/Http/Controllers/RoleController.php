@@ -18,10 +18,10 @@ class RoleController extends Controller
      */
     function __construct()
     {
-         $this->middleware('permission:relay|tb|cadry|admin', ['only' => ['index','store']]);
-         $this->middleware('permission:role-create', ['only' => ['create','store']]);
-         $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:admin', ['only' => ['index','store']]);
+        $this->middleware('permission:admin', ['only' => ['create','store']]);
+        $this->middleware('permission:admin', ['only' => ['edit','update']]);
+        $this->middleware('permission:admin', ['only' => ['destroy']]);
     }
     
     /**

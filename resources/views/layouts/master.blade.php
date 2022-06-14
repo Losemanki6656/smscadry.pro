@@ -68,14 +68,14 @@
                     <li class="nav-item">
                         <a href="{{ route('actions') }}" class="nav-link ">
                             <span class="pcoded-micon">
-                                <i class="fas fa-clock text-primary"></i>
+                                <i class="fas fa-clock text-warning"></i>
                             </span><span class="pcoded-mtext">Submitted</span></a>
                     </li>
 
                     <li class="nav-item">
                         <a href="{{ route('actions') }}" class="nav-link ">
                             <span class="pcoded-micon">
-                                <i class="fas fa-check-circle text-primary"></i>
+                                <i class="fas fa-check-circle text-success"></i>
                             </span><span class="pcoded-mtext">Accepted</span></a>
                     </li>
 

@@ -70,7 +70,7 @@
                                 <div class="form-group">
                                     <label for="organization_phone"> Phone Number</label>
                                     <input type="text" id="phone" class="form-control phone" name="phone" required
-                                        style="width: 100%;" value="998">
+                                        style="width: 100%;">
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
@@ -371,7 +371,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            $('.phone').inputmask('+999(99)-999-99-99');
+            $('.phone').inputmask('(99)-999-99-99');
         });
     </script>
 

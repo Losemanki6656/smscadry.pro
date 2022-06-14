@@ -139,7 +139,9 @@
                     </div> <br> <br>
                     <h6 class="text-center"> Buyruqni yuborish</h6>
                     <select name="" id="sel_user" class="form-control" style="width: 100%">
-                        <option value="">Username</option>
+                        @foreach($users as $user)
+                            <option value="{{$user->id}}">{{$user->name}}</option>
+                        @endforeach
                     </select> <br> <br>
                     <a class="btn btn-primary" href="{{route('exportVacationToDoc')}}" style="width: 100%">
                         <i class="fab fa-telegram-plane"></i> Yuborish</a>

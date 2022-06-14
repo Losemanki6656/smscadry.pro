@@ -9,7 +9,7 @@
         <h5>Role Management </h5>
     </div>
     <div class="col-auto align-self-center">
-        @can('role-create')
+        @can('admin')
             <a href="{{ route('roles.create') }}" class="btn btn-info me-1 mb-1" type="button">
                 <span class="fas fa-plus me-1" data-fa-transform="shrink-3"></span>Create New Role
             </a>
@@ -66,10 +66,10 @@
                             <td class="text-center">
 
                                 <a class="btn btn-outline-info me-1 mb-1" href="{{ route('roles.show',$role->id) }}">Show</a>
-                                @can('role-edit')
+                                @can('relay')
                                     <a class="btn btn-outline-secondary me-1 mb-1" href="{{ route('roles.edit',$role->id) }}">Edit</a>
                                 @endcan
-                                @can('role-delete')
+                                @can('admin')
                                     {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline']) !!}
                                         {!! Form::submit('Delete', ['class' => 'btn btn-outline-danger me-1 mb-1']) !!}
                                     {!! Form::close() !!}
