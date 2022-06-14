@@ -295,16 +295,22 @@ class HomeController extends Controller
         $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
         $id_users = UserOrganization::where('organization_id',$org_id)->pluck('user_id')->toArray();
         $users = User::whereIn('id',$id_users)->role('Buxgalter')->get();
-        //dd($users);
 
         $item = Cadry::find($id);
         $day_vacation = 15;
+        $day_cal = 0;
 
         $query = $request->query();
         if($query) {
-            
+
             $day_vacation = $day_vacation + $request->lavozim;
             $day_vacation = $day_vacation + $request->staj;
+
+            if($request->nogiron) $day_cal = $day_cal + 30;
+            if($request->nogiron_farzand)  $day_vacation = $day_vacation + 3;
+            if($request->yosh12)  $day_vacation = $day_vacation + 3;
+            if($request->donor)  $day_vacation = $day_vacation + 2;
+            if($request->tuy) $day_vacation = $day_vacation + 3;
 
             return view('vacation_cadry',[
                 'item' => $item,

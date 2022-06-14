@@ -59,34 +59,38 @@
                         <div class="row">
                             <div class="col">
                                 <div class="checkbox checkbox-primary d-inline mb-3">
-                                    <input type="checkbox" name="yosh" id="checkbox1">
+                                    <input type="checkbox" name="yosh" id="checkbox1" @if (request('yosh')) checked @endif>
                                     <label for="checkbox1" class="cr">Yoshga to'lmaganlik</label>
                                 </div> <br>
                                 <div class="checkbox checkbox-primary d-inline mb-3">
-                                    <input type="checkbox" name="nogiron" id="checkbox2">
+                                    <input type="checkbox" name="nogiron" id="checkbox2" @if (request('nogiron')) checked @endif>
                                     <label for="checkbox2" class="cr">2 - guruh nogironimi</label>
                                 </div> <br>
                                 <div class="checkbox checkbox-primary d-inline mb-3">
-                                    <input type="checkbox" name="mehnat" id="checkbox3">
+                                    <input type="checkbox" name="mehnat" id="checkbox3" @if (request('mehnat')) checked @endif>
                                     <label for="checkbox3" class="cr">Og'ir mehnat sharoitidamik</label>
                                 </div><br>
                                 <div class="checkbox checkbox-primary d-inline mb-3">
-                                    <input type="checkbox" name="nogiron_farzand" id="checkbox4">
+                                    <input type="checkbox" name="nogiron_farzand" id="checkbox4" @if (request('nogiron_farzand')) checked @endif>
                                     <label for="checkbox4" class="cr">Nogiron farzandlari bormi</label>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="checkbox checkbox-primary d-inline mb-3">
-                                    <input type="checkbox" name="12yosh" id="checkbox5">
+                                    <input type="checkbox" name="yosh12" id="checkbox5" @if (request('yosh12')) checked @endif>
                                     <label for="checkbox5" class="cr">12 yoshga to'lmagan
                                         farzandlari bormi ?</label>
                                 </div> <br>
                                 <div class="checkbox checkbox-primary d-inline mb-3">
-                                    <input type="checkbox" name="donor" id="checkbox6">
+                                    <input type="checkbox" name="donor" id="checkbox6" @if (request('donor')) checked @endif>
                                     <label for="checkbox6" class="cr">Donorlar ro'yxatiga a'zomi</label>
                                 </div> <br>
                                 <div class="checkbox checkbox-primary d-inline mb-3">
-                                    <input type="checkbox" name="other_30" id="checkbox7">
+                                    <input type="checkbox" name="tuy" id="checkbox7" @if (request('tuy')) checked @endif>
+                                    <label for="checkbox7" class="cr">To'y uchun</label>
+                                </div><br>
+                                <div class="checkbox checkbox-primary d-inline mb-3">
+                                    <input type="checkbox" name="other_30" id="checkbox7" @if (request('other_30')) checked @endif>
                                     <label for="checkbox7" class="cr">Qo'shimcha 30 kun</label>
                                 </div>
                             </div>
