@@ -13,6 +13,8 @@ use App\Models\SmsToken;
 use App\Models\SmsArchive;
 use App\Models\Holiday;
 use App\Models\User;
+use Carbon\Carbon;
+use DateTime;
 
 class HomeController extends Controller
 {
@@ -301,6 +303,7 @@ class HomeController extends Controller
         $day_cal = 0;
 
         $query = $request->query();
+
         if($query) {
 
             $day_vacation = $day_vacation + $request->lavozim;
@@ -312,6 +315,27 @@ class HomeController extends Controller
             if($request->donor)  $day_vacation = $day_vacation + 2;
             if($request->tuy) $day_vacation = $day_vacation + 3;
 
+
+            $i = 1; $dateFrom = $request->sana; 
+            
+            $holidays = Holiday::get();
+
+            while ($i <= $day_vacation - 1)
+            {
+                $dateFrom = date('Y-m-d', strtotime($dateFrom. ' + 1 days'));
+                if( Carbon::parse($dateFrom)->dayOfWeek == 0 )  $dateFrom = date('Y-m-d', strtotime($dateFrom. ' + 1 days'));
+                $i ++ ;
+            }
+            
+            dd($dateFrom, $day_vacation);
+
+            foreach ( $holidays as $holiday){
+
+                if($dateFrom == $holiday->date_holiday){
+                    $dateFrom = date('Y-m-d', strtotime($dateFrom. ' + 1 days'));
+                    if( Carbon::parse($dateFrom)->dayOfWeek == 0 )  $dateFrom = date('Y-m-d', strtotime($dateFrom. ' + 1 days'));
+                }
+            }
             return view('vacation_cadry',[
                 'item' => $item,
                 'day_vacation' => $day_vacation,
