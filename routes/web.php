@@ -54,5 +54,10 @@ Route::group(['middleware' => ['auth']], function() {
 
 
     Route::get('/exportVacationToDoc', [App\Http\Controllers\OrganizationController::class, 'exportVacationToDoc'])->name('exportVacationToDoc');
+    Route::post('/SendVacation', [App\Http\Controllers\HomeController::class, 'send_vac'])->name('send_vac');
+
+    
+    Route::get('/cadry/submitteds', [App\Http\Controllers\CadryController::class, 'submitteds'])->name('submitteds');
+    Route::get('/cadry/accepteds', [App\Http\Controllers\CadryController::class, 'accepteds'])->name('accepteds');
 });
 

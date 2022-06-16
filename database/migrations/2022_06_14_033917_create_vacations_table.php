@@ -22,19 +22,23 @@ class CreateVacationsTable extends Migration
             $table->date('per1');
             $table->date('per2');
             $table->integer('yosh')->default(0);
-            $table->integer('2nogiron')->default(0);
+            $table->integer('nogiron')->default(0);
             $table->integer('ogirm')->default(0);
             $table->integer('nogfar')->default(0);
-            $table->integer('12yoshfar')->default(0);
+            $table->integer('yoshfar')->default(0);
             $table->integer('donor')->default(0);
             $table->integer('other30')->default(0);
             $table->integer('klimat')->default(0);
+            $table->integer('tuy')->default(0);
             $table->integer('lastdays')->default(0);
             $table->integer('maindays');
             $table->integer('resultdays');
+            $table->integer('lavozim');
+            $table->integer('staj');
             $table->date('todate');
             $table->date('fromdate');
-            $table->boolean('status')->default(0);
+            $table->boolean('status')->default(false);
+            $table->boolean('status_bux')->default(false);
             $table->timestamps();
         });
     }

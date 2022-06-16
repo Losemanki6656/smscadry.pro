@@ -13,6 +13,7 @@ use App\Models\SmsToken;
 use App\Models\SmsArchive;
 use App\Models\Holiday;
 use App\Models\User;
+use App\Models\Vacation;
 use Carbon\Carbon;
 use DateTime;
 
@@ -301,52 +302,127 @@ class HomeController extends Controller
         $item = Cadry::find($id);
         $day_vacation = 15;
         $day_cal = 0;
-
+        $date1 = now()->format('Y-m-d');
+        $date2 = now()->format('Y-m-d');
         $query = $request->query();
 
         if($query) {
 
-            $day_vacation = $day_vacation + $request->lavozim;
-            $day_vacation = $day_vacation + $request->staj;
-
-            if($request->nogiron) $day_cal = $day_cal + 30;
-            if($request->nogiron_farzand)  $day_vacation = $day_vacation + 3;
-            if($request->yosh12)  $day_vacation = $day_vacation + 3;
-            if($request->donor)  $day_vacation = $day_vacation + 2;
-            if($request->tuy) $day_vacation = $day_vacation + 3;
-
-
-            $i = 1; $dateFrom = $request->sana; 
-            
-            $holidays = Holiday::get();
-
-            while ($i <= $day_vacation - 1)
-            {
-                $dateFrom = date('Y-m-d', strtotime($dateFrom. ' + 1 days'));
-                if( Carbon::parse($dateFrom)->dayOfWeek == 0 )  $dateFrom = date('Y-m-d', strtotime($dateFrom. ' + 1 days'));
-                $i ++ ;
-            }
-            
-            dd($dateFrom, $day_vacation);
-
-            foreach ( $holidays as $holiday){
-
-                if($dateFrom == $holiday->date_holiday){
+            if($request->send1) {
+                $day_vacation = $day_vacation + $request->lavozim;
+                $day_vacation = $day_vacation + $request->staj;
+    
+                if($request->nogiron) $day_cal = $day_cal + 30;
+                if($request->other_30) $day_cal = $day_cal + 30;
+                if($request->nogiron_farzand)  $day_vacation = $day_vacation + 3;
+                if($request->yosh12)  $day_vacation = $day_vacation + 3;
+                if($request->donor)  $day_vacation = $day_vacation + 2;
+                if($request->tuy) $day_vacation = $day_vacation + 3;
+    
+    
+                $i = 1; 
+                $dateFrom = $request->sana; 
+                
+                $holidays = Holiday::get();
+    
+                while ($i <= $day_vacation - 1)
+                {
                     $dateFrom = date('Y-m-d', strtotime($dateFrom. ' + 1 days'));
                     if( Carbon::parse($dateFrom)->dayOfWeek == 0 )  $dateFrom = date('Y-m-d', strtotime($dateFrom. ' + 1 days'));
+                    $i ++ ;
                 }
+    
+                foreach ( $holidays as $holiday){
+    
+                    if($dateFrom == $holiday->date_holiday){
+                        $dateFrom = date('Y-m-d', strtotime($dateFrom. ' + 1 days'));
+                        if( Carbon::parse($dateFrom)->dayOfWeek == 0 )  $dateFrom = date('Y-m-d', strtotime($dateFrom. ' + 1 days'));
+                    }
+                }
+                return view('vacation_cadry',[
+                    'item' => $item,
+                    'day_vacation' => $day_vacation,
+                    'users' => $users,
+                    'date1' => $request->sana,
+                    'date2' => $dateFrom
+                ]);
+            } else if ($request->send2) {
+                $yosh = 0; $nogiron = 0; $other_30 = 0; $ogirm = 0; $nogiron_farzand = 0; $yoshfar = 0; $donor = 0; $tuy = 0; $main_days = 15;
+                $lavozim = $request->lavozim;
+
+                $day_vacation = $day_vacation + $request->lavozim;
+                $day_vacation = $day_vacation + $request->staj;
+    
+                if($request->yosh) { $day_cal = $day_cal + 30; $yosh = 30; }
+                if($request->nogiron) { $day_cal = $day_cal + 30; $nogiron = 30; }
+                if($request->other_30) { $day_cal = $day_cal + 30; $other_30 = 30; $main_days = 0;}
+                if($request->mehnat) { $ogirm = $request->lavozim; $lavozim = 0;} 
+
+                if($request->nogiron_farzand) { $day_vacation = $day_vacation + 3; $nogiron_farzand = 3; }
+                if($request->yosh12) { $day_vacation = $day_vacation + 3; $yoshfar = 3;}
+                if($request->donor)  { $day_vacation = $day_vacation + 2; $donor = 2;}
+                if($request->tuy) { $day_vacation = $day_vacation + 3; $tuy = 3;} 
+    
+    
+                $i = 1; 
+                $dateFrom = $request->sana; 
+                
+                $holidays = Holiday::get();
+    
+                while ($i <= $day_vacation - 1)
+                {
+                    $dateFrom = date('Y-m-d', strtotime($dateFrom. ' + 1 days'));
+                    if( Carbon::parse($dateFrom)->dayOfWeek == 0 )  $dateFrom = date('Y-m-d', strtotime($dateFrom. ' + 1 days'));
+                    $i ++ ;
+                }
+    
+                foreach ( $holidays as $holiday){
+    
+                    if($dateFrom == $holiday->date_holiday){
+                        $dateFrom = date('Y-m-d', strtotime($dateFrom. ' + 1 days'));
+                        if( Carbon::parse($dateFrom)->dayOfWeek == 0 )  $dateFrom = date('Y-m-d', strtotime($dateFrom. ' + 1 days'));
+                    }
+                } 
+                $coun = Vacation::where('cadry_id',$id)->where('status',0)->get();
+                if(!$coun->count()) {
+                    
+                    $vacation = new Vacation();
+                    $vacation->organization_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+                    $vacation->user_send_id = Auth::user()->id;
+                    $vacation->user_rec_id = $request->user_rec_id;
+                    $vacation->cadry_id = $id;
+                    $vacation->per1 = $request->period;
+                    $vacation->per2 = date('Y-m-d', strtotime($request->period. ' + 1 years'));
+                    $vacation->yosh = $yosh;
+                    $vacation->nogiron = $nogiron;
+                    $vacation->ogirm = $ogirm;
+                    $vacation->nogfar = $nogiron_farzand;
+                    $vacation->yoshfar = $yoshfar;
+                    $vacation->donor = $donor;
+                    $vacation->other30 = $other_30;
+                    $vacation->klimat = $request->iqlim;
+                    $vacation->tuy = $tuy;
+                    $vacation->lastdays = $request->qolgan_kun;
+                    $vacation->maindays = $main_days;
+                    $vacation->resultdays = $day_vacation;
+                    $vacation->lavozim = $lavozim;
+                    $vacation->staj = $request->staj;
+                    $vacation->todate = $request->sana;
+                    $vacation->fromdate = $dateFrom;
+                    $vacation->save();
+                }
+                
+
+                return redirect()->route('submitteds');
             }
-            return view('vacation_cadry',[
-                'item' => $item,
-                'day_vacation' => $day_vacation,
-                'users' => $users
-            ]);
         }
 
         return view('vacation_cadry',[
             'item' => $item,
             'day_vacation' => $day_vacation,
-            'users' => $users
+            'users' => $users,
+            'date1' => $date1,
+            'date2' => $date2
         ]);
     }
 
@@ -388,5 +464,10 @@ class HomeController extends Controller
         $dep = Holiday::find($id)->delete();
 
        return redirect()->back()->with('msg' ,1);
+    }
+
+    public function send_vac(Request $request)
+    {
+        dd($request->all());
     }
 }
