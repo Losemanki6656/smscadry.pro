@@ -68,19 +68,24 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="organization_phone"> Phone Number</label>
+                                    <label> Phone Number</label>
                                     <input type="text" id="phone" class="form-control phone" name="phone" required
                                         style="width: 100%;">
                                 </div>
                                 <div class="form-group">
+                                    <label> Staff Name</label>
+                                    <textarea type="text" class="form-control" name="staff" required
+                                        style="width: 100%;"> </textarea>
+                                </div>
+                                <div class="form-group">
                                     <div class="row">
                                         <div class="col">
-                                            <label for="organization_phone"> Date Vac</label>
+                                            <label> Date Vac</label>
                                             <input type="date" class="form-control" name="date_vac" required
                                                 style="width: 100%;">
                                         </div>
                                         <div class="col">
-                                            <label for="organization_phone"> Date Med</label>
+                                            <label> Date Med</label>
                                             <input type="date" class="form-control" name="date_med" required
                                                 style="width: 100%;">
                                         </div>
@@ -250,6 +255,11 @@
                                                                 <input type="text" id="phone" class="form-control phone"
                                                                     name="phone" required style="width: 100%;"
                                                                     value="{{ $item->phone }}">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label> Staff Name</label>
+                                                                <textarea type="text" class="form-control"
+                                                                    name="staff" required style="width: 100%;"> {{ $item->staff }} </textarea>
                                                             </div>
                                                             <div class="form-group">
                                                                 <div class="row">

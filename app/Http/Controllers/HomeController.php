@@ -70,6 +70,7 @@ class HomeController extends Controller
        $cadry->department_id = $request->department_id ?? 0;
        $cadry->fullname = $request->fullname;
        $cadry->phone = $request->phone;
+       $cadry->staff = $request->staff;
        $cadry->date_med2 = $request->date_med;
        $cadry->date_vac2 = $request->date_vac;
        $cadry->save();
@@ -145,6 +146,7 @@ class HomeController extends Controller
        $cadry->department_id = $request->department_id ?? 0;
        $cadry->fullname = $request->fullname;
        $cadry->phone = $request->phone;
+       $cadry->staff = $request->staff;
        $cadry->date_med2 = $request->date_med2;
        $cadry->date_vac2 = $request->date_vac2;
        $cadry->save();

@@ -98,7 +98,7 @@
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-success btn-sm"><i class="fas fa-check-circle"></i></button>
                                                 <button type="button" class="btn btn-warning btn-sm"><i class="fas fa-minus-circle"></i></button>
-                                                <button type="button" class="btn btn-primary btn-sm"><i class="fas fa-file-download"></i></button>
+                                                <a href="{{route('exportVacationToDoc',['id' => $item->id])}}" type="button" class="btn btn-primary btn-sm"><i class="fas fa-file-download"></i></a>
                                                 <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                                             </td>
                                         </tr>

@@ -53,7 +53,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/delete-holiday{id}', [App\Http\Controllers\HomeController::class, 'delete_holiday'])->name('delete_holiday');
 
 
-    Route::get('/exportVacationToDoc', [App\Http\Controllers\OrganizationController::class, 'exportVacationToDoc'])->name('exportVacationToDoc');
+    Route::get('/exportVacationToDoc/{id}', [App\Http\Controllers\OrganizationController::class, 'exportVacationToDoc'])->name('exportVacationToDoc');
     Route::post('/SendVacation', [App\Http\Controllers\HomeController::class, 'send_vac'])->name('send_vac');
 
     
