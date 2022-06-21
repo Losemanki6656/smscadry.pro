@@ -387,7 +387,6 @@ class HomeController extends Controller
                 } 
                 $coun = Vacation::where('cadry_id',$id)->where('status',0)->get();
                 if(!$coun->count()) {
-                    
                     $vacation = new Vacation();
                     $vacation->organization_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
                     $vacation->user_send_id = Auth::user()->id;
@@ -411,6 +410,7 @@ class HomeController extends Controller
                     $vacation->staj = $request->staj;
                     $vacation->todate = $request->sana;
                     $vacation->fromdate = $dateFrom;
+                    $vacation->date_next = $request->date_next;
                     $vacation->save();
                 }
                 

@@ -37,6 +37,7 @@ class CreateVacationsTable extends Migration
             $table->integer('staj');
             $table->date('todate');
             $table->date('fromdate');
+            $table->date('date_next');
             $table->boolean('status')->default(false);
             $table->boolean('status_bux')->default(false);
             $table->timestamps();

@@ -96,13 +96,42 @@
                                             <td>{{ $item->user_rec->name }}</td>
                                             <td>{{ $item->updated_at }}</td>
                                             <td class="text-center">
-                                                <button type="button" class="btn btn-success btn-sm"><i class="fas fa-check-circle"></i></button>
+                                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
+                                                data-target="#success{{ $item->id }}"><i class="fas fa-check-circle"></i></button>
                                                 <button type="button" class="btn btn-warning btn-sm"><i class="fas fa-minus-circle"></i></button>
                                                 <a href="{{route('exportVacationToDoc',['id' => $item->id])}}" type="button" class="btn btn-primary btn-sm"><i class="fas fa-file-download"></i></a>
                                                 <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                                             </td>
                                         </tr>
-
+                                        <div id="success{{ $item->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <form action="{{ route('success_vacation', ['id' => $item->id]) }}"
+                                                method="post">
+                                                @csrf
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Success Vacation</h5>
+                                                            <button type="button" class="close"
+                                                                data-dismiss="modal" aria-label="Close"><span
+                                                                    aria-hidden="true">&times;</span></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <h5><code> Vacation:</code> {{ $item->fullname }}</h5>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn  btn-secondary"
+                                                                data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-success"><i
+                                                                    class="fab fa-telegram-plane"></i> Submit
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -115,4 +144,16 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            @if (\Session::has('msg'))
+                @if (Session::get('msg') == 1)
+                    alertify.success('Worker successfully !');
+                @endif
+            @endif
+        });
+    </script>
 @endsection

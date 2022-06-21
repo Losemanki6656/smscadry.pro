@@ -59,5 +59,6 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::get('/cadry/submitteds', [App\Http\Controllers\CadryController::class, 'submitteds'])->name('submitteds');
     Route::get('/cadry/accepteds', [App\Http\Controllers\CadryController::class, 'accepteds'])->name('accepteds');
+    Route::post('/cadry/SuccessVacation/{id}', [App\Http\Controllers\CadryController::class, 'success_vacation'])->name('success_vacation');
 });
 

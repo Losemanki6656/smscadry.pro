@@ -29,8 +29,11 @@
                                 <th width="170px">
                                     Ta'til periodi
                                 </th>
-                                <th width="170px">
+                                <th width="200px">
                                     Ta'tilga chiqish sanasi
+                                </th>
+                                <th width="170px">
+                                    Keyingi ta'til sanasi
                                 </th>
                             </thead>
                             <tbody>
@@ -51,6 +54,10 @@
                                     <td>
                                         <input type="date" class="form-control" style="width: 140px;" name="sana"
                                             value="{{ request('sana') ?? now()->format('Y-m-d') }}" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="date" class="form-control" style="width: 140px;" name="date_next"
+                                            value="{{ request('date_next') ?? now()->format('Y-m-d') }}" class="form-control">
                                     </td>
                                 </tr>
                             </tbody>

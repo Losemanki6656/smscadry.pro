@@ -45,4 +45,13 @@ class CadryController extends Controller
             'accepteds' => $accepteds->paginate(10)
         ]);
     }
+
+    public function success_vacation($id)
+    {
+        $submit = Vacation::find($id);
+        $submit->status = 1;
+        $submit->save();
+
+        return redirect()->back()->with('msg' ,1);
+    }
 }
