@@ -22,6 +22,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('users', UserController::class);
 
     //Sidebar
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/departments', [App\Http\Controllers\HomeController::class, 'departments'])->name('departments');
     Route::get('/archive-sms', [App\Http\Controllers\HomeController::class, 'archive_sms'])->name('archive_sms');
