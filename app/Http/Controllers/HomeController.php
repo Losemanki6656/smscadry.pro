@@ -249,13 +249,15 @@ class HomeController extends Controller
                 $archive->cadry_id = $id;
                 $archive->sms_text = $request->textmessage;
                 $archive->save();
+
+                return redirect()->back()->with('msg' ,$json['status']);
             }
             else
             {
                 $this->smstoken();
             }
 
-        return redirect()->back()->with('msg' ,1);
+       
     }
 
     public function smstoken()
