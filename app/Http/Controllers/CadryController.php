@@ -14,6 +14,8 @@ use App\Models\Holiday;
 use App\Models\User;
 use App\Models\Vacation;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\CadryImport;
 use DateTime;
 use Auth;
 
@@ -63,5 +65,38 @@ class CadryController extends Controller
         $war->save();
         
         return redirect()->back()->with('msg' ,2);
+    }
+
+    public function excelimport()
+    {
+        return view('excelimport');
+    }
+
+    public function excelimportsuccess(Request $request)
+    {
+        set_time_limit(600);
+
+        $collections = Excel::toCollection(new CadryImport, $request->file('ecel'));
+        
+            $arr = $collections[0];
+            $x = 0;
+            $y = 0;
+            $a = [];
+
+            foreach ($arr as $row) { 
+            $cadry = Cadry::create([
+                    'organization_id' => 1,
+                    'department_id' => 0,
+                    'fullname' => $row[0] ?? '',
+                    'phone' => $row[4] ?? '',
+                    'staff' => $row[1] ?? '',
+                    'date_med2' => \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[2]))->format('Y-m-d'),
+                ]);
+
+                $x ++;
+            }
+
+        dd($x);
+
     }
 }

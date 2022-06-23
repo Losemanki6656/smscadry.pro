@@ -15,9 +15,6 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 Auth::routes();
 
 Route::group(['middleware' => ['auth']], function() {
@@ -61,5 +58,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/cadry/accepteds', [App\Http\Controllers\CadryController::class, 'accepteds'])->name('accepteds');
     Route::post('/cadry/SuccessVacation/{id}', [App\Http\Controllers\CadryController::class, 'success_vacation'])->name('success_vacation');
     Route::get('/cadry/submitteds/Warning/{id}', [App\Http\Controllers\CadryController::class, 'warningVacation'])->name('warningVacation');
+    Route::get('/cadry/excelimport', [App\Http\Controllers\CadryController::class, 'excelimport'])->name('excelimport');
+    Route::post('/cadry/excelimportsuccess', [App\Http\Controllers\CadryController::class, 'excelimportsuccess'])->name('excelimportsuccess');
 });
 

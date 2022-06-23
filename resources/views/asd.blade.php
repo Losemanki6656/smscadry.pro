@@ -80,6 +80,11 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col">
+                                            <label> Date Vac</label>
+                                            <input type="date" class="form-control" name="date_vac" required
+                                                style="width: 100%;">
+                                        </div>
+                                        <div class="col">
                                             <label> Date Med</label>
                                             <input type="date" class="form-control" name="date_med" required
                                                 style="width: 100%;">
@@ -108,7 +113,9 @@
                                         <th><span>Name</span></th>
                                         <th><span>Department</span></th>
                                         <th width="230"><span>Phone</span></th>
+                                        <th width="150"><span>Date V</span></th>
                                         <th width="150"><span>Date M</span></th>
+                                        <th width="160"><span>Status</span></th>
                                         <th width="160"><span>Status</span></th>
                                         <th class="text-center" width="120">Action</th>
                                     </tr>
@@ -123,6 +130,14 @@
                                             </td>
                                             <td>{{ $item->department->name ?? '' }}</td>
                                             <td>{{ $item->phone }}</td>
+                                            @if ($organization->vacation == true)
+                                            <td>
+                                                <a href="{{route('vacation',['id' => $item->id])}}"
+                                                    class="text-light">
+                                                    <span class="badge bg-secondary">{{ $item->date_vac2->format('d-m-Y') }}</span>
+                                                </a>
+                                            </td>     
+                                            @endif
                                           
                                             <td>
                                                 <a href="" data-toggle="modal" data-target="#succmodal{{ $item->id }}"
@@ -131,6 +146,23 @@
                                                         class="badge bg-primary">{{ $item->date_med2->format('d-m-Y') }}</span>
                                                 </a>
                                             </td>
+                                            @if ($organization->vacation == true)
+                                            <td>
+                                                @if ($item->date_vac2 > now())
+                                                    @if ($item->date_vac2->diffInDays() + 1 > 5)
+                                                        <span class="text-primary" style="font-weight: bold">
+                                                            {{ $item->date_vac2->diffInDays() + 1 }} days left</span>
+                                                    @else
+                                                        <span class="text-warning" style="font-weight: bold">
+                                                            {{ $item->date_vac2->diffInDays() + 1 }} days left</span>
+                                                    @endif
+                                                @else
+                                                    <span class="text-danger" style="font-weight: bold">Expired<span
+                                                            class="ms-1 fas fa-ban"
+                                                            data-fa-transform="shrink-2"></span></span>
+                                                @endif
+                                            </td>
+                                            @endif
                                            
                                             <td>
                                                 @if ($item->date_med2 > now())
@@ -237,6 +269,13 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <div class="row">
+                                                                    <div class="col">
+                                                                        <label for="organization_phone"> Date Vac</label>
+                                                                        <input type="date" class="form-control"
+                                                                            name="date_vac2"
+                                                                            value="{{ $item->date_vac2->format('Y-m-d') }}"
+                                                                            required style="width: 100%;">
+                                                                    </div>
                                                                     <div class="col">
                                                                         <label for="organization_phone"> Date Med</label>
                                                                         <input type="date" class="form-control"

@@ -38,7 +38,7 @@ class HomeController extends Controller
     {
         $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
         $organization = Organization::find($org_id);
-        
+
         $cadry = Cadry::query()
         ->where('organization_id', $org_id)
         ->when(\Request::input('search'),function($query,$search){
@@ -49,7 +49,7 @@ class HomeController extends Controller
 
         $deps = Department::where('organization_id',$org_id)->get();
 
-        if(!$request->paginate) $paginate = 3; else $paginate = $request->paginate;
+        if(!$request->paginate) $paginate = 15; else $paginate = $request->paginate;
 
         return view('home',[
             'cadry' => $cadry->paginate($paginate),
