@@ -342,8 +342,10 @@
             @if (\Session::has('msg'))
                 @if (Session::get('msg') == 1)
                     alertify.success('Worker successfully added !');
-                @else
-                    alertify.warning('send success');
+                @elseif(Session::get('msg') == 2)
+                    alertify.success('send success');
+                @elseif(Session::get('msg') == 3)
+                     alertify.warning('Not Send');
                 @endif
             @endif
         });

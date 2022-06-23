@@ -229,7 +229,7 @@ class HomeController extends Controller
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS =>"{ \"messages\":[ {\"user_sms_id\":\"$id\",\"to\": \"$phone\",\"text\": \"$text\"} ],\"from\":\"4546\",\"dispatch_id\":\"123\"}",
+            CURLOPT_POSTFIELDS =>"{ \"messages\":[ {\"user_sms_id\":\"$id\",\"to\": \"998$phone\",\"text\": \"$text\"} ],\"from\":\"4546\",\"dispatch_id\":\"123\"}",
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer '.$Token,
                 'Content-Type: application/json'
@@ -241,7 +241,6 @@ class HomeController extends Controller
             $err = curl_error($curl);
             curl_close($curl);
             $json = json_decode($response, true);
-    
             if($json['status'] == "success")
             {
                 $archive = new SmsArchive();
@@ -250,11 +249,13 @@ class HomeController extends Controller
                 $archive->sms_text = $request->textmessage;
                 $archive->save();
 
-                return redirect()->back()->with('msg' ,$json['status']);
+                return redirect()->back()->with('msg' ,2);
             }
             else
             {
                 $this->smstoken();
+
+                return redirect()->back()->with('msg' ,3);
             }
 
        
