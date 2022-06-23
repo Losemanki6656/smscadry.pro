@@ -15,9 +15,10 @@
                     </div>
                     <button type="button" class="btn btn-primary btn-sm mr-2" data-toggle="modal"
                         data-target="#exampleModalCenter"><i class="fa fa-plus mr-3"></i>Add Worker</button>
-
-                    <button type="button" class="btn btn-danger btn-sm mr-2" data-toggle="modal"
-                        data-target="#exampleModalCenter"><i class="fa fa-filter mr-2"></i>Filter</button>
+                    <form action="{{ route('home') }}" method="get">
+                        <button type="submit" name="filter" value="filter" class="btn btn-danger btn-sm mr-2"><i class="fa fa-filter mr-2"></i>Filter</button>
+                    </form>
+                    
 
                 </div>
 
@@ -108,15 +109,15 @@
                                         <th><span>Name</span></th>
                                         <th><span>Department</span></th>
                                         <th width="230"><span>Phone</span></th>
-                                        <th width="150"><span>Date M</span></th>
+                                        <th width="200"><span>Date M</span></th>
                                         <th width="160"><span>Status</span></th>
-                                        <th class="text-center" width="120">Action</th>
+                                        <th class="text-center" width="180">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($cadry as $item)
                                         <tr>
-                                            <td>1</td>
+                                            <td>{{ $cadry->currentPage() * request('paginate') -  request('paginate') + $loop->index + 1 }}</td>
                                             <td><a href="" class="text-dark" style="font-weight: bold"
                                                     data-toggle="modal"
                                                     data-target="#editmodal{{ $item->id }}">{{ $item->fullname }}</a>
@@ -125,11 +126,7 @@
                                             <td>{{ $item->phone }}</td>
                                           
                                             <td>
-                                                <a href="" data-toggle="modal" data-target="#succmodal{{ $item->id }}"
-                                                    class="text-light">
-                                                    <span
-                                                        class="badge bg-primary">{{ $item->date_med2->format('d-m-Y') }}</span>
-                                                </a>
+                                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#succmodal{{ $item->id }}">{{ $item->date_med2->format('d-m-Y') }}</button>
                                             </td>
                                            
                                             <td>
@@ -150,8 +147,8 @@
                                             <td class="text-center">
                                                 <a href="javascript:void(0);" data-toggle="modal"
                                                     data-target="#sendmodal{{ $item->id }}" class="text-light">
-                                                    <span class="badge bg-success"> <i class="fab fa-telegram-plane"></i>
-                                                        Send sms</span>
+                                                    <button class="btn btn-success btn-sm"> <i class="fab fa-telegram-plane"></i>
+                                                        Send sms</button>
                                                 </a>
                                             </td>
                                         </tr>
@@ -300,7 +297,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="container">
+                        <div class="mr-5 ml-5">
                             <div class="row mb-3">
                                 <div class="col d-flex justify-content mt-3">
                                     <h6 class="mt-2 mr-2">Show</h6>
@@ -309,8 +306,6 @@
                                         <option value="10" @if (request('paginate') == 10) selected @endif>10</option>
                                         <option value="50" @if (request('paginate') == 50) selected @endif>50</option>
                                         <option value="100" @if (request('paginate') == 100) selected @endif>100</option>
-                                        <option value="{{ $cadry->count() }}"
-                                            @if (request('paginate') == $cadry->count()) selected @endif>All</option>
                                     </select>
                                     <h6 class="mt-2 ml-2">entries</h6>
                                 </div>

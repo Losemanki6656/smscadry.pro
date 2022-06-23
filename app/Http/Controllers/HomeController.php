@@ -45,11 +45,13 @@ class HomeController extends Controller
             $query->where(function ($query) use ($search) {
                 $query->Orwhere('fullname','like','%'.$search.'%');
             });
+        })->when(\Request::input('filter'),function($query,$filter){
+            return $query->orderBy('date_med2','asc');
         })->with('department');
 
         $deps = Department::where('organization_id',$org_id)->get();
 
-        if(!$request->paginate) $paginate = 15; else $paginate = $request->paginate;
+        if(!$request->paginate) $paginate = 10; else $paginate = $request->paginate;
 
         return view('home',[
             'cadry' => $cadry->paginate($paginate),
