@@ -37,6 +37,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+        $organization = Organization::find($org_id);
         
         $cadry = Cadry::query()
         ->where('organization_id', $org_id)
@@ -52,7 +53,8 @@ class HomeController extends Controller
 
         return view('home',[
             'cadry' => $cadry->paginate($paginate),
-            'deps' => $deps
+            'deps' => $deps,
+            'organization' => $organization
         ]);
     }
 

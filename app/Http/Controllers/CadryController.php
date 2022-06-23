@@ -54,4 +54,14 @@ class CadryController extends Controller
 
         return redirect()->back()->with('msg' ,1);
     }
+
+    
+    public function warningVacation($id)
+    {
+        $war = Vacation::find($id);
+        $war->status_bux = 1;
+        $war->save();
+        
+        return redirect()->back()->with('msg' ,2);
+    }
 }
