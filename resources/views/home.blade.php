@@ -343,7 +343,7 @@
                 @if (Session::get('msg') == 1)
                     alertify.success('Worker successfully added !');
                 @elseif
-                    alertify.warning(Session::get('msg'));
+                    alertify.warning( "send success");
                 @endif
             @elseif
         });
