@@ -60,6 +60,32 @@ class HomeController extends Controller
         ]);
     }
 
+    public function vacations(Request $request)
+    {
+        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+        $organization = Organization::find($org_id);
+
+        $cadry = Cadry::query()
+        ->where('organization_id', $org_id)
+        ->when(\Request::input('search'),function($query,$search){
+            $query->where(function ($query) use ($search) {
+                $query->Orwhere('fullname','like','%'.$search.'%');
+            });
+        })->when(\Request::input('filter'),function($query,$filter){
+            return $query->orderBy('date_med2','asc');
+        })->with('department');
+
+        $deps = Department::where('organization_id',$org_id)->get();
+
+        if(!$request->paginate) $paginate = 10; else $paginate = $request->paginate;
+
+        return view('vacations',[
+            'cadry' => $cadry->paginate($paginate),
+            'deps' => $deps,
+            'organization' => $organization
+        ]);
+    }
+
     public function add_worker(Request $request)
     {
       // dd($request->all());
@@ -139,6 +165,23 @@ class HomeController extends Controller
         $session->user_id = Auth::user()->id;
         $session->cadry_id = $id;
         $session->status = "Date Med Updated to '.$request->date_med2.'";
+        $session->save();
+
+        return redirect()->back()->with('msg' ,1);
+    }
+
+    public function update_vac_cadry(Request $request, $id)
+    {
+        $worker = Cadry::find($id);
+        $worker->date_vac1 = $worker->date_vac2;
+        $worker->date_vac2 = $request->date_vac2;
+        $worker->save();
+
+        $session = new SessionMed();
+        $session->organization_id = $worker->organization_id;
+        $session->user_id = Auth::user()->id;
+        $session->cadry_id = $id;
+        $session->status = "Date Vacation Updated to '.$request->date_vac2.'";
         $session->save();
 
         return redirect()->back()->with('msg' ,1);

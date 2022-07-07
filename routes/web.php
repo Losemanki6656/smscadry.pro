@@ -28,6 +28,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/archive-sms', [App\Http\Controllers\HomeController::class, 'archive_sms'])->name('archive_sms');
     Route::get('/actions', [App\Http\Controllers\HomeController::class, 'actions'])->name('actions');
     Route::get('/holidays', [App\Http\Controllers\HomeController::class, 'holidays'])->name('holidays');
+    Route::get('/vacations', [App\Http\Controllers\HomeController::class, 'vacations'])->name('vacations');
 
 
     //Department Menu
@@ -39,6 +40,7 @@ Route::group(['middleware' => ['auth']], function() {
     //Workers Menu
     Route::post('/add-worker', [App\Http\Controllers\HomeController::class, 'add_worker'])->name('add_worker');
     Route::post('/update-med-worker/{id}', [App\Http\Controllers\HomeController::class, 'update_med_cadry'])->name('update_med_cadry');
+    Route::post('/update-vac-worker/{id}', [App\Http\Controllers\HomeController::class, 'update_vac_cadry'])->name('update_vac_cadry');
     Route::post('/edit-worker/{id}', [App\Http\Controllers\HomeController::class, 'edit_worker'])->name('edit_worker');
     Route::get('/delete-worker/{id}', [App\Http\Controllers\HomeController::class, 'delete_worker'])->name('delete_worker');
     Route::post('/send-message/{id}', [App\Http\Controllers\HomeController::class, 'send_message'])->name('send_message');

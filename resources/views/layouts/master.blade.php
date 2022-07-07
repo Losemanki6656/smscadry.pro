@@ -46,6 +46,12 @@
                             </span><span class="pcoded-mtext">Cadry</span></a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('vacations') }}" class="nav-link ">
+                            <span class="pcoded-micon">
+                                <i class="fa fa-users text-primary"></i>
+                            </span><span class="pcoded-mtext">Vacations</span></a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('departments') }}" class="nav-link ">
                             <span class="pcoded-micon">
                                 <i class="fas fa-sitemap text-primary"></i>

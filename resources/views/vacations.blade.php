@@ -7,7 +7,7 @@
 
                 <div class="form-inline">
                     <div class="form-group mx-sm-3">
-                        <form action="{{ route('home') }}" method="get">
+                        <form action="{{ route('vacations') }}" method="get">
                             @csrf
                             <input class="form-control form-control-sm" value="{{ request()->query('search') }}"
                                 name="search" type="search" placeholder="search ..." />
@@ -15,7 +15,7 @@
                     </div>
                     <button type="button" class="btn btn-primary btn-sm mr-2" data-toggle="modal"
                         data-target="#exampleModalCenter"><i class="fa fa-plus mr-3"></i>Add Worker</button>
-                    <form action="{{ route('home') }}" method="get">
+                    <form action="{{ route('vacations') }}" method="get">
                         <button type="submit" name="filter" value="filter" class="btn btn-danger btn-sm mr-2"><i class="fa fa-filter mr-2"></i>Filter</button>
                     </form>
                     
@@ -85,13 +85,6 @@
                                             <input type="date" class="form-control" name="date_med" required
                                                 style="width: 100%;">
                                         </div>
-                                       @can('product-create')
-                                        <div class="col">
-                                                <label> Date Vac</label>
-                                                <input type="date" class="form-control" name="date_vac" required
-                                                    style="width: 100%;">
-                                            </div>
-                                       @endcan
                                     </div>
 
                                 </div>
@@ -116,12 +109,8 @@
                                         <th><span>Name</span></th>
                                         <th><span>Department</span></th>
                                         <th width="230"><span>Phone</span></th>
-                                        <th width="200"><span>Date M</span></th>
-                                        @can('product-create')
-                                            <th width="200"><span>Date Vac</span></th>
-                                        @endcan
-                                        <th width="160"><span>Med</span></th>
-                                        <th width="160"><span>Vac</span></th>
+                                        <th width="200"><span>Vacations</span></th>
+                                        <th width="160"><span>Status</span></th>
                                         <th class="text-center" width="180">Action</th>
                                     </tr>
                                 </thead>
@@ -137,33 +126,13 @@
                                             <td>{{ $item->phone }}</td>
                                           
                                             <td>
-                                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#succmodal{{ $item->id }}">{{ $item->date_med2->format('d-m-Y') }}</button>
-                                            </td>
-                                            @can('product-create')
-                                            <td>
                                                 @if ($item->date_vac2)
-                                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#succmodalvac{{ $item->id }}">
+                                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#succmodal{{ $item->id }}">
                                                             {{ $item->date_vac2->format('d-m-Y') }}
                                                     </button>
                                                 @endif 
                                             </td>
-                                            @endcan
-                                            <td>
-                                                @if ($item->date_med2 > now())
-                                                    @if ($item->date_med2->diffInDays() + 1 > 5)
-                                                        <span class="text-primary" style="font-weight: bold">
-                                                            {{ $item->date_med2->diffInDays() + 1 }} days left</span>
-                                                    @else
-                                                        <span class="text-warning" style="font-weight: bold">
-                                                            {{ $item->date_med2->diffInDays() + 1 }} days left</span>
-                                                    @endif
-                                                @else
-                                                    <span class="text-danger" style="font-weight: bold">Expired<span
-                                                            class="ms-1 fas fa-ban"
-                                                            data-fa-transform="shrink-2"></span></span>
-                                                @endif
-                                            </td>
-                                            @can('product-create')
+                                           
                                             <td>
                                                 @if ($item->date_vac2)
                                                     @if ($item->date_vac2 > now())
@@ -181,7 +150,6 @@
                                                     @endif
                                                 @endif
                                             </td>
-                                            @endcan
                                             <td class="text-center">
                                                 <a href="javascript:void(0);" data-toggle="modal"
                                                     data-target="#sendmodal{{ $item->id }}" class="text-light">
@@ -193,43 +161,6 @@
 
                                         <div id="succmodal{{ $item->id }}" class="modal fade" tabindex="-1"
                                             role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <form action="{{ route('update_med_cadry', ['id' => $item->id]) }}"
-                                                method="post">
-                                                @csrf
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Update
-                                                                Med Cadry</h5>
-                                                            <button type="button" class="close"
-                                                                data-dismiss="modal" aria-label="Close"><span
-                                                                    aria-hidden="true">&times;</span></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control"
-                                                                    value="{{ $item->fullname }}" readonly
-                                                                    style="width: 100%;" required>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="organization_phone"> Date</label>
-                                                                <input type="date" class="form-control" id="date_vacation"
-                                                                    name="date_med2"
-                                                                    value="{{ $item->date_med2->format('Y-m-d') }}"
-                                                                    required style="width: 100%;">
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn  btn-secondary"
-                                                                data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn  btn-success">Submit </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div id="succmodalvac{{ $item->id }}" class="modal fade" tabindex="-1"
-                                            role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                             <form action="{{ route('update_vac_cadry', ['id' => $item->id]) }}"
                                                 method="post">
                                                 @csrf
@@ -237,7 +168,7 @@
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="exampleModalCenterTitle">Update
-                                                                Vacation Cadry</h5>
+                                                                Med Cadry</h5>
                                                             <button type="button" class="close"
                                                                 data-dismiss="modal" aria-label="Close"><span
                                                                     aria-hidden="true">&times;</span></button>
@@ -267,6 +198,7 @@
                                                 </div>
                                             </form>
                                         </div>
+
                                         <div id="editmodal{{ $item->id }}" class="modal fade" tabindex="-1"
                                             role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                             <form action="{{ route('edit_worker', ['id' => $item->id]) }}" method="post">
@@ -313,21 +245,12 @@
                                                                     <div class="col">
                                                                         <label for="organization_phone"> Date Med</label>
                                                                         <input type="date" class="form-control"
-                                                                            name="date_med2"
-                                                                            value="{{ $item->date_med2->format('Y-m-d') }}"
-                                                                            required style="width: 100%;">
-                                                                    </div>
-                                                                    @can('product-create')
-                                                                    <div class="col">
-                                                                        <label for="organization_phone"> Date Vac</label>
-                                                                        <input type="date" class="form-control"
                                                                             name="date_vac2"
                                                                             @if ($item->date_vac2)
                                                                                 value="{{ $item->date_vac2->format('Y-m-d') }}"
                                                                             @endif
                                                                             required style="width: 100%;">
                                                                     </div>
-                                                                    @endcan
                                                                 </div>
 
                                                             </div>
