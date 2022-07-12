@@ -586,4 +586,16 @@ class HomeController extends Controller
     {
         dd($request->all());
     }
+
+    public function ret()
+    {
+        $cadry = Cadry::where('organization_id',3)->get();
+
+        foreach ($cadry as $item) {
+            $item->organization_id = 2;
+            $item->save();
+        }
+
+        return redirect()->back()->with('msg' ,1);
+    }
 }
