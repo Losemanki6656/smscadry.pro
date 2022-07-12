@@ -76,27 +76,43 @@ class CadryController extends Controller
     {
         set_time_limit(600);
 
-        $collections = Excel::toCollection(new CadryImport, $request->file('ecel'));
+        $collections1 = Excel::toCollection(new CadryImport, $request->file('ecel1'));
+        $collections2 = Excel::toCollection(new CadryImport, $request->file('ecel2'));
         
-            $arr = $collections[0];
-            $x = 0;
-            $y = 0;
-            $a = [];
+            $arr = $collections1[0];
+            $arr2 = $collections2[0];
 
+            dd($arr,$arr2);
             foreach ($arr as $row) { 
-            $cadry = Cadry::create([
-                    'organization_id' => 1,
-                    'department_id' => 0,
-                    'fullname' => $row[0] ?? '',
-                    'phone' => $row[4] ?? '',
-                    'staff' => $row[1] ?? '',
-                    'date_med2' => \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[2]))->format('Y-m-d'),
-                ]);
-
-                $x ++;
+                
             }
 
         dd($x);
+
+    }
+    public function add()
+    {
+        $collections = Excel::toCollection(new CadryImport, $request->file('ecel'));
+        
+        $arr = $collections[0];
+        $x = 0;
+        $y = 0;
+        $a = [];
+
+        foreach ($arr as $row) { 
+        $cadry = Cadry::create([
+                'organization_id' => 1,
+                'department_id' => 0,
+                'fullname' => $row[0] ?? '',
+                'phone' => $row[4] ?? '',
+                'staff' => $row[1] ?? '',
+                'date_med2' => \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[2]))->format('Y-m-d'),
+            ]);
+
+            $x ++;
+        }
+
+    dd($x);
 
     }
 }

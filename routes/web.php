@@ -40,10 +40,12 @@ Route::group(['middleware' => ['auth']], function() {
     //Workers Menu
     Route::post('/add-worker', [App\Http\Controllers\HomeController::class, 'add_worker'])->name('add_worker');
     Route::post('/update-med-worker/{id}', [App\Http\Controllers\HomeController::class, 'update_med_cadry'])->name('update_med_cadry');
-    Route::post('/update-vac-worker/{id}', [App\Http\Controllers\HomeController::class, 'update_vac_cadry'])->name('update_vac_cadry');
+    Route::post('/update-vac-worker/{id}', [App\Http\Controllers\HomeController::class, 'adding_vacation_cadry'])->name('adding_vacation_cadry');
     Route::post('/edit-worker/{id}', [App\Http\Controllers\HomeController::class, 'edit_worker'])->name('edit_worker');
     Route::get('/delete-worker/{id}', [App\Http\Controllers\HomeController::class, 'delete_worker'])->name('delete_worker');
     Route::post('/send-message/{id}', [App\Http\Controllers\HomeController::class, 'send_message'])->name('send_message');
+    Route::get('/send-message-vacation/{id}', [App\Http\Controllers\HomeController::class, 'send_sms_to_vac'])->name('send_sms_to_vac');
+    Route::get('/delete-vacation/{id}', [App\Http\Controllers\HomeController::class, 'delete_vac'])->name('delete_vac');
 
     Route::get('/cadry/vacation/{id}', [App\Http\Controllers\HomeController::class, 'vacation'])->name('vacation');
 
@@ -59,8 +61,6 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::get('/cadry/submitteds', [App\Http\Controllers\CadryController::class, 'submitteds'])->name('submitteds');
     Route::get('/cadry/accepteds', [App\Http\Controllers\CadryController::class, 'accepteds'])->name('accepteds');
-    Route::post('/cadry/SuccessVacation/{id}', [App\Http\Controllers\CadryController::class, 'success_vacation'])->name('success_vacation');
-    Route::get('/cadry/submitteds/Warning/{id}', [App\Http\Controllers\CadryController::class, 'warningVacation'])->name('warningVacation');
     Route::get('/cadry/excelimport', [App\Http\Controllers\CadryController::class, 'excelimport'])->name('excelimport');
     Route::post('/cadry/excelimportsuccess', [App\Http\Controllers\CadryController::class, 'excelimportsuccess'])->name('excelimportsuccess');
 });

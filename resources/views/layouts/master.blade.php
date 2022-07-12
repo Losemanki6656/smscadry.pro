@@ -45,12 +45,15 @@
                                 <i class="fa fa-users text-primary"></i>
                             </span><span class="pcoded-mtext">Cadry</span></a>
                     </li>
+                    @can('product-create')
                     <li class="nav-item">
                         <a href="{{ route('vacations') }}" class="nav-link ">
                             <span class="pcoded-micon">
                                 <i class="fa fa-users text-primary"></i>
                             </span><span class="pcoded-mtext">Vacations</span></a>
-                    </li>
+                    </li>  
+                    @endcan
+                    
                     <li class="nav-item">
                         <a href="{{ route('departments') }}" class="nav-link ">
                             <span class="pcoded-micon">
@@ -175,6 +178,7 @@
     <script src="{{ asset('assets/js/bootstrap-select.js') }}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+    
     @yield('scripts')
     @stack('scripts')
 </body>

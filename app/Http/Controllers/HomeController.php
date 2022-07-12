@@ -14,6 +14,7 @@ use App\Models\SmsArchive;
 use App\Models\Holiday;
 use App\Models\User;
 use App\Models\Vacation;
+use App\Models\CadryVac;
 use Carbon\Carbon;
 use DateTime;
 
@@ -63,37 +64,89 @@ class HomeController extends Controller
     public function vacations(Request $request)
     {
         $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
-        $organization = Organization::find($org_id);
-
-        $cadry = Cadry::query()
-        ->where('organization_id', $org_id)
-        ->when(\Request::input('search'),function($query,$search){
-            $query->where(function ($query) use ($search) {
-                $query->Orwhere('fullname','like','%'.$search.'%');
-            });
-        })->when(\Request::input('filter'),function($query,$filter){
-            return $query->orderBy('date_med2','asc');
-        })->with('department');
-
-        $deps = Department::where('organization_id',$org_id)->get();
 
         if(!$request->paginate) $paginate = 10; else $paginate = $request->paginate;
 
+        $cadry = CadryVac::
+        where('organization_id',$org_id)
+        ->orderBy('created_at','desc')
+        ->with('cadry')->paginate($paginate);
+
         return view('vacations',[
-            'cadry' => $cadry->paginate($paginate),
-            'deps' => $deps,
-            'organization' => $organization
+            'cadry' => $cadry
         ]);
+    }
+
+    public function send_sms_to_vac($id)
+    {
+        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+        $SmsTokenID = Organization::find($org_id);
+        $Token = SmsToken::find($SmsTokenID->sms_token_id)->sms_token;
+
+        $Worker = CadryVac::find($id);
+
+        $char = ['(', ')', ' ','-','+'];
+        $replace = ['', '', '','',''];
+        $phone = str_replace($char, $replace, $Worker->cadry->phone);
+    
+        $text = "Xurmatli ".$Worker->cadry->fullname. ". Sizga ".$Worker->date1->format('Y-m-d')." sanasidan ".$Worker->date2->format('Y-m-d')." sanasigacha umumiy xisobda ".$Worker->date2->diffInDays($Worker->date1) ." mehnat ta'tili xisoblandi. Xurmat bilan ".$SmsTokenID->name." xodimlar bo'limi!";
+    
+            $curl = curl_init();
+            
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://notify.eskiz.uz/api/message/sms/send-batch',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS =>"{ \"messages\":[ {\"user_sms_id\":\"$id\",\"to\": \"998$phone\",\"text\": \"$text\"} ],\"from\":\"4546\",\"dispatch_id\":\"123\"}",
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer '.$Token,
+                'Content-Type: application/json'
+            ),
+            ));
+    
+            $response = curl_exec($curl);
+    
+            $err = curl_error($curl);
+            curl_close($curl);
+            $json = json_decode($response, true);
+            if($json['status'] == "success")
+            {
+                $archive = new SmsArchive();
+                $archive->organization_id = $org_id;
+                $archive->cadry_id = $id;
+                $archive->sms_text = $text;
+                $archive->save();
+
+                $as =  CadryVac::find($id);
+                $as->status1 = true;
+                $as->save();
+
+                return redirect()->back()->with('msg' ,2);
+            }
+            else
+            {
+                $this->smstoken();
+
+                return redirect()->back()->with('msg' ,3);
+            }
+
+    }
+
+    public function delete_vac($id)
+    {
+        CadryVac::find($id)->delete();
+
+        return redirect()->back()->with('msg' ,4);
     }
 
     public function add_worker(Request $request)
     {
-      // dd($request->all());
        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
-
-       //$char = ['(', ')', ' ','-','+'];
-       //$replace = ['', '', '','',''];
-       //$phone = str_replace($char, $replace, $request->phone);
 
        $cadry = new Cadry();
        $cadry->organization_id = $org_id;
@@ -102,7 +155,6 @@ class HomeController extends Controller
        $cadry->phone = $request->phone;
        $cadry->staff = $request->staff;
        $cadry->date_med2 = $request->date_med;
-       $cadry->date_vac2 = $request->date_vac;
        $cadry->save();
 
        $session = new SessionMed();
@@ -153,6 +205,20 @@ class HomeController extends Controller
        return redirect()->back()->with('msg' ,1);
     }
 
+    public function adding_vacation_cadry($id, Request $request)
+    {   
+        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+
+        $as = new CadryVac();
+        $as->organization_id = $org_id;
+        $as->cadry_id = $id;
+        $as->date1 = $request->date1;
+        $as->date2 = $request->date2;
+        $as->save();
+
+        return redirect()->back()->with('msg' ,1);
+    }
+    
     public function update_med_cadry(Request $request, $id)
     {
         $worker = Cadry::find($id);
@@ -302,8 +368,6 @@ class HomeController extends Controller
 
                 return redirect()->back()->with('msg' ,3);
             }
-
-       
     }
 
     public function smstoken()

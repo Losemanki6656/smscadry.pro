@@ -69,11 +69,6 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label> Phone Number</label>
-                                    <input type="text" id="phone" class="form-control phone" name="phone" required
-                                        style="width: 100%;">
-                                </div>
-                                <div class="form-group">
                                     <label> Staff Name</label>
                                     <textarea type="text" class="form-control" name="staff" required
                                         style="width: 100%;"> </textarea>
@@ -81,19 +76,17 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col">
-                                            <label> Date Med</label>
-                                            <input type="date" class="form-control" name="date_med" required
+                                            <label> Phone Number</label>
+                                            <input type="text" id="phone" class="form-control phone" name="phone" required
                                                 style="width: 100%;">
                                         </div>
-                                       @can('product-create')
                                         <div class="col">
-                                                <label> Date Vac</label>
-                                                <input type="date" class="form-control" name="date_vac" required
-                                                    style="width: 100%;">
-                                            </div>
-                                       @endcan
+                                            <label> Date Med </label>
+                                            <input type="date" class="form-control" name="date_med" required
+                                                style="width: 100%;"> 
+                                        </div>
                                     </div>
-
+                                    
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -117,12 +110,8 @@
                                         <th><span>Department</span></th>
                                         <th width="230"><span>Phone</span></th>
                                         <th width="200"><span>Date M</span></th>
-                                        @can('product-create')
-                                            <th width="200"><span>Date Vac</span></th>
-                                        @endcan
                                         <th width="160"><span>Med</span></th>
-                                        <th width="160"><span>Vac</span></th>
-                                        <th class="text-center" width="180">Action</th>
+                                        <th class="text-center" width="300">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -137,17 +126,9 @@
                                             <td>{{ $item->phone }}</td>
                                           
                                             <td>
-                                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#succmodal{{ $item->id }}">{{ $item->date_med2->format('d-m-Y') }}</button>
+                                                {{ $item->date_med2->format('d-m-Y') }}
                                             </td>
-                                            @can('product-create')
-                                            <td>
-                                                @if ($item->date_vac2)
-                                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#succmodalvac{{ $item->id }}">
-                                                            {{ $item->date_vac2->format('d-m-Y') }}
-                                                    </button>
-                                                @endif 
-                                            </td>
-                                            @endcan
+                                           
                                             <td>
                                                 @if ($item->date_med2 > now())
                                                     @if ($item->date_med2->diffInDays() + 1 > 5)
@@ -163,26 +144,11 @@
                                                             data-fa-transform="shrink-2"></span></span>
                                                 @endif
                                             </td>
-                                            @can('product-create')
-                                            <td>
-                                                @if ($item->date_vac2)
-                                                    @if ($item->date_vac2 > now())
-                                                        @if ($item->date_vac2->diffInDays() + 1 > 5)
-                                                            <span class="text-primary" style="font-weight: bold">
-                                                                {{ $item->date_vac2->diffInDays() + 1 }} days left</span>
-                                                        @else
-                                                            <span class="text-warning" style="font-weight: bold">
-                                                                {{ $item->date_vac2->diffInDays() + 1 }} days left</span>
-                                                        @endif
-                                                    @else
-                                                        <span class="text-danger" style="font-weight: bold">Expired<span
-                                                                class="ms-1 fas fa-ban"
-                                                                data-fa-transform="shrink-2"></span></span>
-                                                    @endif
-                                                @endif
-                                            </td>
-                                            @endcan
                                             <td class="text-center">
+                                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#succmodal{{ $item->id }}">Med</button>
+                                                @can('product-create')
+                                                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#warning{{ $item->id }}">Vac</button>
+                                                @endcan
                                                 <a href="javascript:void(0);" data-toggle="modal"
                                                     data-target="#sendmodal{{ $item->id }}" class="text-light">
                                                     <button class="btn btn-success btn-sm"> <i class="fab fa-telegram-plane"></i>
@@ -190,7 +156,53 @@
                                                 </a>
                                             </td>
                                         </tr>
-
+                                        <div id="warning{{ $item->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <form action="{{ route('adding_vacation_cadry', ['id' => $item->id]) }}"
+                                                method="post">
+                                                @csrf
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Update
+                                                                Vacation Cadry</h5>
+                                                            <button type="button" class="close"
+                                                                data-dismiss="modal" aria-label="Close"><span
+                                                                    aria-hidden="true">&times;</span></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ $item->fullname }}" readonly
+                                                                    style="width: 100%;" required>
+                                                            </div>
+                                                            <div>
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <label> Date 1</label>
+                                                                        <input type="date" class="form-control" name="date1"
+                                                                            required style="width: 100%;">
+                                                                    </div>
+                                                                    <div class="col">
+                                                                        <label> Date 2</label>
+                                                                        <input type="date" class="form-control" name="date2"
+                                                                            required style="width: 100%;">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn  btn-secondary"
+                                                                data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn  btn-success">Submit </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
                                         <div id="succmodal{{ $item->id }}" class="modal fade" tabindex="-1"
                                             role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                             <form action="{{ route('update_med_cadry', ['id' => $item->id]) }}"
@@ -216,45 +228,6 @@
                                                                 <input type="date" class="form-control" id="date_vacation"
                                                                     name="date_med2"
                                                                     value="{{ $item->date_med2->format('Y-m-d') }}"
-                                                                    required style="width: 100%;">
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn  btn-secondary"
-                                                                data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn  btn-success">Submit </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div id="succmodalvac{{ $item->id }}" class="modal fade" tabindex="-1"
-                                            role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <form action="{{ route('update_vac_cadry', ['id' => $item->id]) }}"
-                                                method="post">
-                                                @csrf
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Update
-                                                                Vacation Cadry</h5>
-                                                            <button type="button" class="close"
-                                                                data-dismiss="modal" aria-label="Close"><span
-                                                                    aria-hidden="true">&times;</span></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control"
-                                                                    value="{{ $item->fullname }}" readonly
-                                                                    style="width: 100%;" required>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="organization_phone"> Date</label>
-                                                                <input type="date" class="form-control" id="date_vacation"
-                                                                    name="date_vac2"
-                                                                        @if ($item->date_vac2)
-                                                                            value="{{ $item->date_vac2->format('Y-m-d') }}"
-                                                                        @endif
                                                                     required style="width: 100%;">
                                                             </div>
                                                         </div>
@@ -298,12 +271,6 @@
                                                                 </select>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="organization_phone"> Phone Number</label>
-                                                                <input type="text" id="phone" class="form-control phone"
-                                                                    name="phone" required style="width: 100%;"
-                                                                    value="{{ $item->phone }}">
-                                                            </div>
-                                                            <div class="form-group">
                                                                 <label> Staff Name</label>
                                                                 <textarea type="text" class="form-control"
                                                                     name="staff" required style="width: 100%;"> {{ $item->staff }} </textarea>
@@ -311,25 +278,19 @@
                                                             <div class="form-group">
                                                                 <div class="row">
                                                                     <div class="col">
+                                                                        <label for="organization_phone"> Phone Number</label>
+                                                                        <input type="text" id="phone" class="form-control phone"
+                                                                            name="phone" required style="width: 100%;"
+                                                                            value="{{ $item->phone }}">
+                                                                    </div>
+                                                                    <div class="col">
                                                                         <label for="organization_phone"> Date Med</label>
                                                                         <input type="date" class="form-control"
                                                                             name="date_med2"
                                                                             value="{{ $item->date_med2->format('Y-m-d') }}"
                                                                             required style="width: 100%;">
                                                                     </div>
-                                                                    @can('product-create')
-                                                                    <div class="col">
-                                                                        <label for="organization_phone"> Date Vac</label>
-                                                                        <input type="date" class="form-control"
-                                                                            name="date_vac2"
-                                                                            @if ($item->date_vac2)
-                                                                                value="{{ $item->date_vac2->format('Y-m-d') }}"
-                                                                            @endif
-                                                                            required style="width: 100%;">
-                                                                    </div>
-                                                                    @endcan
                                                                 </div>
-
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
