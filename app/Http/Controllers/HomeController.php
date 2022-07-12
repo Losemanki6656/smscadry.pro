@@ -236,6 +236,23 @@ class HomeController extends Controller
         return redirect()->back()->with('msg' ,1);
     }
 
+    public function update_vacation_cadry(Request $request, $id)
+    {
+        $worker = CadryVac::find($id);
+        $worker->date1 = $request->date1;
+        $worker->date2 = $request->date2;
+        $worker->save();
+
+        $session = new SessionMed();
+        $session->organization_id = $worker->organization_id;
+        $session->user_id = Auth::user()->id;
+        $session->cadry_id = $worker->cadry->id;
+        $session->status = "Date Vacation Updated to '.$request->date2.'";
+        $session->save();
+
+        return redirect()->back()->with('msg' ,1);
+    }
+
     public function update_vac_cadry(Request $request, $id)
     {
         $worker = Cadry::find($id);

@@ -85,12 +85,59 @@
                                         <td>
                                             @if ($item->status1 == false)
                                                 <a type="button" href="{{route('send_sms_to_vac',['id' => $item->id])}}" class="btn btn-primary btn-sm">Sms</a>
-                                                <button class="btn btn-secondary btn-sm">Edit</button>
+                                                <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#edit{{ $item->id }}">Edit</button>
                                             @else
                                                  <a href="{{route('delete_vac',['id' => $item->id])}}" class="btn btn-danger btn-sm">Delete</a>
                                             @endif
                                         </td>
                                     </tr>
+                                    <div id="edit{{ $item->id }}" class="modal fade" tabindex="-1"
+                                        role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <form action="{{ route('update_vacation_cadry', ['id' => $item->id]) }}"
+                                            method="post">
+                                            @csrf
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalCenterTitle">Update
+                                                            Vacation Cadry</h5>
+                                                        <button type="button" class="close"
+                                                            data-dismiss="modal" aria-label="Close"><span
+                                                                aria-hidden="true">&times;</span></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control"
+                                                                value="{{ $item->cadry->fullname }}" readonly
+                                                                style="width: 100%;" required>
+                                                        </div>
+                                                        <div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <label> Date 1</label>
+                                                                    <input type="date" class="form-control" name="date1" value="{{ $item->date1->format('Y-m-d') }}"
+                                                                        required style="width: 100%;">
+                                                                </div>
+                                                                <div class="col">
+                                                                    <label> Date 2</label>
+                                                                    <input type="date" class="form-control" name="date2" value="{{ $item->date2->format('Y-m-d') }}"
+                                                                        required style="width: 100%;">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn  btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn  btn-success">Submit </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 @endforeach
                             </tbody>
                         </table>
@@ -114,7 +161,7 @@
                                 <script>
                                     $('#select_paginate').change(function(e) {
                                         let paginate = $(this).val();
-                                        let url = '{{ route('home') }}';
+                                        let url = '{{ route('vacations') }}';
                                         window.location.href = `${url}?paginate=${paginate}`;
                                     })
                                 </script>

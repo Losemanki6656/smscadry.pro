@@ -47,13 +47,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/send-message-vacation/{id}', [App\Http\Controllers\HomeController::class, 'send_sms_to_vac'])->name('send_sms_to_vac');
     Route::get('/delete-vacation/{id}', [App\Http\Controllers\HomeController::class, 'delete_vac'])->name('delete_vac');
 
+    Route::post('/update-vacation/{id}', [App\Http\Controllers\HomeController::class, 'update_vacation_cadry'])->name('update_vacation_cadry');
     Route::get('/cadry/vacation/{id}', [App\Http\Controllers\HomeController::class, 'vacation'])->name('vacation');
 
     //holidasys
     Route::post('/add-holiday', [App\Http\Controllers\HomeController::class, 'add_holiday'])->name('add_holiday');
     Route::get('/edit-holiday/{id}', [App\Http\Controllers\HomeController::class, 'edit_holiday'])->name('edit_holiday');
     Route::get('/delete-holiday{id}', [App\Http\Controllers\HomeController::class, 'delete_holiday'])->name('delete_holiday');
-    
+
     Route::get('/retrieve', [App\Http\Controllers\HomeController::class, 'ret']);
 
 
