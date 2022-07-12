@@ -295,7 +295,7 @@ class HomeController extends Controller
         $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
 
         $deps = SmsArchive::
-        where('organization_id',$org_id)->with('cadry');
+        where('organization_id',$org_id)->with('cadry')->orderBy('created_at','desc');
 
         return view('archive_sms',[
             'deps' => $deps->paginate(10)
