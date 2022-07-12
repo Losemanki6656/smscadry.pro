@@ -77,17 +77,22 @@ class CadryController extends Controller
         set_time_limit(600);
 
         $collections1 = Excel::toCollection(new CadryImport, $request->file('ecel1'));
-        $collections2 = Excel::toCollection(new CadryImport, $request->file('ecel2'));
         
             $arr = $collections1[0];
-            $arr2 = $collections2[0];
-
-            dd($arr,$arr2);
-            foreach ($arr as $row) { 
-                
+            $x = 0;
+            foreach ($arr as $item) {
+                $cadry = Cadry::create([
+                    'organization_id' => 3,
+                    'department_id' => 0,
+                    'fullname' => $item[1] ?? '',
+                    'phone' => substr($item[3], 3) ?? '',
+                    'staff' => $item[2] ?? '',
+                    'date_med2' => $item[4],
+                ]);
+                $x ++;
             }
-
         dd($x);
+        
 
     }
     public function add()
